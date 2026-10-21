@@ -169,7 +169,7 @@ def fts_query(text):
 def split_csv(value):
     return [v for v in (value or "").split(",") if v]
 
-
+#translates search filters (URL query parameters) into SQL conditions and parameter vals.
 def build_where(f, exclude=()):
     """WHERE clause for the filters in `f`. `exclude` skips filters (used for facet counts and the timeline)."""
     where, args = [], []

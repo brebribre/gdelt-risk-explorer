@@ -105,7 +105,7 @@ def fetch(url, retries=3):
 def split_items(field, sep):
     return [item.split(sep) for item in field.split(";") if item]
 
-
+#a raw GKG row becomes the app's article record.
 def parse_row(r, countries):
     if len(r) < 27:
         return None
@@ -113,6 +113,8 @@ def parse_row(r, countries):
     # Themes -> our risk types, with offsets for location pairing
     risk_offsets = {}
     gdelt_themes = set()
+    #check the row len and extract risk matches form the theme field
+    #offset is the theme's position in the text
     for parts in split_items(r[C_THEMES], ","):
         theme = parts[0]
         risk = THEME_TO_RISK.get(theme)
@@ -175,6 +177,8 @@ def parse_row(r, countries):
         tone = 0.0
 
     # Batch time = when GDELT saw it. Prefer the page's own publish time when present.
+    # parser distinguishes the time GDELT saw an article from its publication time.
+    #precise publication timestamp when that timestamp is present, otherwise use the GDELT batch time.
     seen = r[C_DATE]
     p = re.search(r"<PAGE_PRECISEPUBTIMESTAMP>(\d{14})", r[C_EXTRAS])
     pub = p.group(1) if p and "2000" < p.group(1) <= seen else None
