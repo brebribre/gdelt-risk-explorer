@@ -7,12 +7,13 @@ Search and filter supply-chain risk news from the last 48 hours of GDELT 2.0 GKG
 ingest/    Python: downloads GDELT raw 15-min GKG files, keeps risk articles, writes SQLite
   taxonomy.py         our risk types and which GDELT themes map to them
   ingest.py           the downloader / parser
-server/    Python: small read-only JSON API over the database (port 8787)
+server/    Python: FastAPI read-only JSON API over the database (port 8787, Swagger at /api/docs)
 web/       React + Vite + Leaflet UI (port 5173, proxies /api to 8787)
 data/      gdelt.db (created by ingest)
 ```
 
-No Python packages needed (standard library only). Node 18+ for the web app.
+Ingestion uses only the Python standard library. The API needs FastAPI + Uvicorn
+(`server/requirements.txt`). Node 18+ for the web app.
 
 ## Run
 
@@ -20,14 +21,26 @@ No Python packages needed (standard library only). Node 18+ for the web app.
 # 1. Fetch data (incremental: re-running only downloads new batches)
 python3 ingest/ingest.py --hours 48
 
-# 2. API
-python3 server/api.py
+# 2. API (first time: create the virtualenv)
+python3 -m venv .venv && .venv/bin/pip install -r server/requirements.txt
+.venv/bin/python server/api.py
 
 # 3. UI (in another terminal)
 cd web && npm install && npm run dev
 ```
 
 Open http://localhost:5173.
+
+## API
+
+Interactive docs (Swagger UI): http://localhost:8787/api/docs
+OpenAPI spec: http://localhost:8787/api/openapi.json
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /api/search` | Search and filter articles; returns results, hourly timeline, map points and facet counts |
+| `GET /api/articles/{id}` | One article |
+| `GET /api/meta` | Dataset overview (counts, time range) and the risk taxonomy |
 
 ## Search
 
