@@ -1,0 +1,4 @@
+# Keep shell scripts LF and Windows scripts CRLF regardless of who checks them out
+*.sh   text eol=lf
+*.ps1  text eol=crlf
+*.bat  text eol=crlf

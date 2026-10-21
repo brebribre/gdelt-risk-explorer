@@ -4,6 +4,7 @@ Search and filter supply-chain risk news from the last 48 hours of GDELT 2.0 GKG
 (English + machine-translated feeds).
 
 ```
+setup/     install / start / update scripts for macOS and Windows
 ingest/    Python: downloads GDELT raw 15-min GKG files, keeps risk articles, writes SQLite
   taxonomy.py         our risk types and which GDELT themes map to them
   ingest.py           the downloader / parser
@@ -12,10 +13,22 @@ web/       React + Vite + Leaflet UI (port 5173, proxies /api to 8787)
 data/      gdelt.db (created by ingest)
 ```
 
-Ingestion uses only the Python standard library. The API needs FastAPI + Uvicorn
-(`server/requirements.txt`). Node 18+ for the web app.
+Needs Python 3.10+ and Node.js 18+.
 
-## Run
+## Quick start
+
+| | macOS | Windows |
+|---|---|---|
+| Install + download data (once) | `setup/mac/setup.sh` | double-click `setup\windows\setup.bat` |
+| Start the app | `setup/mac/start.sh` | double-click `setup\windows\start.bat` |
+| Refresh data | `setup/mac/update-data.sh` | double-click `setup\windows\update-data.bat` |
+
+See [setup/README.md](setup/README.md) for options and troubleshooting.
+
+## Run manually
+
+Ingestion uses only the Python standard library. The API needs FastAPI + Uvicorn
+(`server/requirements.txt`).
 
 ```bash
 # 1. Fetch data (incremental: re-running only downloads new batches)
