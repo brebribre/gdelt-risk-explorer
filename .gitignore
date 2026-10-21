@@ -1,0 +1,15 @@
+# Generated data (rebuild with: python3 ingest/ingest.py)
+data/
+*.log
+
+# Python
+__pycache__/
+*.pyc
+
+# Node
+node_modules/
+web/dist/
+
+# OS / editor
+.DS_Store
+.vscode/
